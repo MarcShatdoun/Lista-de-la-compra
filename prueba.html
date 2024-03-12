@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <section class="productes">
+        <div onclick="fruta('pomelo', 2.5)">
+            <img loading="lazy" class="imatges" src="img/aranja.png" alt="Aranja">
+            <p>Pomelo: 2,50 €/kg</p>
+        </div>
+    
+        <div onclick="fruta('kiwi', 4.20)" id="kiwi">
+            <img loading="lazy" class="imatges" src="img/kiwi.png" alt="Kiwi">
+            <p>Kiwi: 4,20€/kg</p>
+        </div>
+    </section>
+    <div id="carrito"></div>
+    
+    <script>
+
+        function fruta(nombre, valor) {
+            const carritoDiv = document.getElementById("carrito");
+
+            let cantidadFrutas = prompt(`¿Qué cantidad de ${nombre} desea?`);
+            let precioFinal = valor * cantidadFrutas;
+            
+            const pElement = document.createElement("p");
+            pElement.textContent = `${nombre} ${cantidadFrutas} x ${valor}/Kg = ${precioFinal}€`;
+            carritoDiv.appendChild(pElement);
+        }
+    </script>
+</body>
+</html>

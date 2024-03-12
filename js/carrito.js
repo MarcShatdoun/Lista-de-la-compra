@@ -40,26 +40,76 @@ Recuerda la importancia comentar con detalle el código.
 //     let valorFinal = valor1 * kilosFrutas
     
 // }
-
-let listaCompra = document.getElementById('carrito')
-let precioTotal = document.getElementById('preuFinal').textContent
-
-console.log(precioTotal);
+let  carritoLista = document.getElementById('carrito')  
+let precioTotal = document.getElementById('preuFinal')
+let frutaSuma = 0
+let frutaResta = 0
 
 
 function fruta (nombre, valor) {
+    //Preguntamos al usuario la cantidad (en Kg)
+    let cantidadFrutas = prompt(`¿Qué cantidad de ${nombre} desea?`)   
+    // hacemos la multiplicacion correspondiente pero lo guardamos en una variable no definitiva para poder hacer un toFixed                       
+    let precioFinalNoFixed = valor * cantidadFrutas;                                          
+    // Le agregampos el toFixed para que solo muestre 2 deciamles y redonde a lo alto
+    let precioFinal = precioFinalNoFixed.toFixed(2)                                           
     
-    
-    let cantidadFrutas = prompt(`¿Qué cantidad de ${nombre} desea?`)
-    let precioFinal = valor * cantidadFrutas
+    // constante que cree un span vacio
+    const spanFrutas = document.createElement("span") 
+    // guardamos el todo el resultado en esta variable para despues colocarla                                        
+    let frutasTodo =  `${nombre} ${cantidadFrutas}kg x ${valor}/Kg = ${precioFinal}€`
+    //dentro del span usamos la funcion innerHtml para insetar el icono de borrar, mas el texto que guardamos en la variable antrerior            
+    spanFrutas.innerHTML =  '<i class="fa-solid fa-trash" id="borrar" onclick="borrar()"></i>' + frutasTodo  
+    // La etiqueta que contenga la ID "carrito" sera el padre del span.
+    carritoLista.appendChild(spanFrutas);                                                      
 
-    //tomamos valor del campo
+    spanFrutas.setAttribute('value', `${precioFinal}`)
+        
+    
+    let precioFinalNumber = Number(precioFinal)
    
-    let valor = `${nombre} ${cantidadFrutas} x ${valor}/Kg = ${precioFinal}€` 
+    
+    frutaSuma += precioFinalNumber
+    console.log("working",frutaSuma);
+    actualiza();
+}
+ 
+
+function borrar(){
+    let valueSpan = document.querySelector('#carrito span')
+    let valorRestar = valueSpan.getAttribute('value')
+    let valorRestarNumber = Number(valorRestar)
+    let precioRestar = precioTotal
+
+    console.log('working delete',valorRestarNumber);
+    console.log(typeof(precioRestar));
+    frutaResta = precioRestar - valorRestarNumber
+   
     
     
+    actualiza()
+}
+
+function actualiza(){
+    
+    precioTotal.innerText = frutaSuma - frutaResta
+   
 
     
 }
+    
+    // precioTotal.innerText = frutaSuma.toFixed(2)
+    
+    // precioTotal.innerText = frutaResta.toFixed(2)
+    
+
+
+
+
+
+
+
+
+
 
 
