@@ -40,10 +40,12 @@ Recuerda la importancia comentar con detalle el código.
 //     let valorFinal = valor1 * kilosFrutas
     
 // }
-let  carritoLista = document.getElementById('carrito')  
+let carritoLista = document.getElementById('carrito')  
 let precioTotal = document.getElementById('preuFinal')
-let frutaSuma = 0
-let frutaResta = 0
+//Esta variable sera el valor numero donde dara el restulado total y tambien servira para restar cuando sea necesario
+let numeroActualizado = 0
+//Cuando el numero sufre cambios, ya sea que sumen o reste, guardara ese numero para hacer la operacion.
+let numeroAnterior = 0; 
 
 
 function fruta (nombre, valor) {
@@ -53,49 +55,48 @@ function fruta (nombre, valor) {
     let precioFinalNoFixed = valor * cantidadFrutas;                                          
     // Le agregampos el toFixed para que solo muestre 2 deciamles y redonde a lo alto
     let precioFinal = precioFinalNoFixed.toFixed(2)                                           
-    
     // constante que cree un span vacio
     const spanFrutas = document.createElement("span") 
     // guardamos el todo el resultado en esta variable para despues colocarla                                        
     let frutasTodo =  `${nombre} ${cantidadFrutas}kg x ${valor}/Kg = ${precioFinal}€`
-    //dentro del span usamos la funcion innerHtml para insetar el icono de borrar, mas el texto que guardamos en la variable antrerior            
-    spanFrutas.innerHTML =  '<i class="fa-solid fa-trash" id="borrar" onclick="borrar()"></i>' + frutasTodo  
+    //dentro del span usamos la funcion innerHtml para insetar el icono de borrar(y en el onclick agregamos el valor de ese span para poder borrarlo mas adelante), mas el texto que guardamos en la variable antrerior            
+    spanFrutas.innerHTML =  `<i class="fa-solid fa-trash" id="borrar" onclick="borrar(${precioFinal})"></i>` + frutasTodo  
     // La etiqueta que contenga la ID "carrito" sera el padre del span.
-    carritoLista.appendChild(spanFrutas);                                                      
+    carritoLista.appendChild(spanFrutas);     
+    //agrego un id con el precio que da para poder eliminarlo.                                                 
+    spanFrutas.setAttribute('ID', `${precioFinal}`)
 
-    spanFrutas.setAttribute('value', `${precioFinal}`)
-        
-    
+    //lo convertirmos en number para que pueda sumar o restar dependiendo de la operaciones que hagamos
     let precioFinalNumber = Number(precioFinal)
-   
-    
-    frutaSuma += precioFinalNumber
-    console.log("working",frutaSuma);
-    actualiza();
+   //Guarda el resultado en esa variable y la enviamos mediante "actualizarHTML"
+    numeroActualizado += precioFinalNumber
+
+    actualizaHTML();
 }
- 
+function borrar(value){
+    //No he podido coger el ID dinamico que tiene cada span, ya que cada uno es diferente.
+    let spanBorrar = document.getElementById('?')
+    console.log(spanBorrar);
+    spanBorrar.remove();
 
-function borrar(){
-    let valueSpan = document.querySelector('#carrito span')
-    let valorRestar = valueSpan.getAttribute('value')
-    let valorRestarNumber = Number(valorRestar)
-    let precioRestar = precioTotal
+    //Como este funcion solo puede ser activada cuando hay 1 fruta, no habria problema que el numeroAnterior sea 0, hace la operacion y la envia su respectiva funcion.
+    numeroActualizado = numeroAnterior - value
+    actualizaHTML()
 
-    console.log('working delete',valorRestarNumber);
-    console.log(typeof(precioRestar));
-    frutaResta = precioRestar - valorRestarNumber
-   
-    
-    
-    actualiza()
+    // let valueSpan = document.querySelector('#carrito span')
+    // let valorRestar = valueSpan.getAttribute('value')
+    // let valorRestarNumber = Number(valorRestar)
+    // let precioRestar = numeroAnterior  
+
+    //esto era el codigo anterior, esta comentado porque no servia porque encontre una solucion mejor.
 }
 
-function actualiza(){
-    
-    precioTotal.innerText = frutaSuma - frutaResta
+function actualizaHTML(){
    
+    //como comente arriba, la primera linea es cuando tenemos el resultado y lo envia al span"preuFinal" y guardamos el resultado en "numeroAnterior" para seguir haciendo operaciones.
+    precioTotal.innerText = numeroActualizado.toFixed(2)
+    numeroAnterior = numeroActualizado.toFixed(2)
 
-    
 }
     
     // precioTotal.innerText = frutaSuma.toFixed(2)
